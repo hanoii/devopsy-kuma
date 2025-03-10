@@ -1,0 +1,29 @@
+name: traefik-${DEVOPSY_ENVIRONMENT-main}
+
+services:
+  kuma:
+    restart: unless-stopped
+    image: louislam/uptime-kuma:1.23.16
+    security_opt:
+      - no-new-privileges:true  # Prevent privilege escalation
+    cap_drop:
+      - SYS_ADMIN  # Explicitly drop CAP_SYS_ADMIN
+    read_only: true
+    tmpfs:
+      - /tmp  # Allow a temporary writable directory
+      - /var/cache/nscd
+      - /var/run/nscd
+    volumes:
+      - ./mnt/kuma:/app/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${DEVOPSY_TRAEFIK_NAME-traefik-main}"
+      - "traefik.http.routers.kuma25-${DEVOPSY_ENVIRONMENT-main}.rule=Host(`$DEVOPSY_HOST`)"
+      - "traefik.http.services.kuma25-${DEVOPSY_ENVIRONMENT-main}.loadbalancer.server.port=3001"
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    name: ${DEVOPSY_TRAEFIK_NAME-traefik-main}
+    external: true

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# attempt to keep quotes, not 100% sure on this
+_args=
+for x in "${@}" ; do
+    x=${x//\"/\\\"}
+    x=${x//\\\\\"/\\\"}
+    x="\""$x"\""
+    _args=$_args" "$x
+done
+
+cmd="devopsy exec kuma bash $_args"
+>&2 echo -e "\033[0;36mRunning '$cmd'...\033[0m"
+eval $cmd

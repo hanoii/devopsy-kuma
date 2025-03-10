@@ -1,0 +1,7 @@
+# https://stackoverflow.com/a/46354071
+/mnt/**
+!/mnt/**/
+!/mnt/**/.gitkeep
+/.env
+/docker-compose.override.y*ml
+/compose.override.y*ml
