@@ -9,8 +9,9 @@ services:
     cap_drop:
       - SYS_ADMIN  # Explicitly drop CAP_SYS_ADMIN
     read_only: true
+    # Allow temporary writable directories need for the container to start
     tmpfs:
-      - /tmp  # Allow a temporary writable directory
+      - /tmp
       - /var/cache/nscd
       - /var/run/nscd
     volumes:
